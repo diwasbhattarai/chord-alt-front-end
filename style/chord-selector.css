@@ -1,0 +1,60 @@
+#chord-builder {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    /* max-width: 600px; */
+    /* margin: auto; */
+    /* margin-top: 30px; */
+    margin-bottom: 20px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+#chord-builder label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#chord-builder select {
+    display: block;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
+}
+
+#chord-builder .chord_item {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.alt_chord_item {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#chord-builder .chord:hover {
+    background-color: #f1f1f1;
+}
+#chord-progression {
+    max-width: 600px;
+    margin: auto;
+    margin-top: 30px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 24px;
+}
