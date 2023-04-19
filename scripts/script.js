@@ -108,8 +108,6 @@ function playChordProgression(chordProgression, alternate, altIndex, alternate0,
 
 
 
-
-    debugger;
     if (!alternate0) { // original progression
         // get all elements with class='chord_item' and sequentially add chord_1, chord_2, chord_3, etc.
         $('.chord_item').each(function(index) {
@@ -514,7 +512,7 @@ $(document).on('click', '#submit_button',(function(e) {
                             </button>`;
                 playChordsBtnDiv.onclick = (function(i){
                     return function() { 
-                        debugger;
+                        // debugger;
                         playChordProgression(inv_passingChords, true, -1, true, i);
                     };
                 })(i)
