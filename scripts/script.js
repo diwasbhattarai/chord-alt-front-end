@@ -364,7 +364,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 showTabDiv.classList.add('row');
                 showTabDiv.innerHTML = `
                             <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
-                                <i class="fa fa-guitar" style="color:black"></i>
+                                <i class="fa fa-guitar fa-lg" style="color:black"></i>
                             </button>`;
 
                 showTabDiv.onclick = (function(index, progression, passing, fingerings_dict) {
@@ -432,7 +432,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 // playChordsBtnDiv.classList.add('row');
                 playChordsBtnDiv.innerHTML = `
                             <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
-                                <i class="fa fa-play alternates0 alternates0_${i}"></i>
+                                <i class="fa fa-play fa-lg alternates0 alternates0_${i}"></i>
                             </button>`;
                 genChordsItem.appendChild(playChordsBtnDiv);
 
@@ -501,7 +501,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 showTabDiv.classList.add('row');
                 showTabDiv.innerHTML = `
                             <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
-                                <i class="fa fa-guitar" style="color:black"></i>
+                                <i class="fa fa-guitar fa-lg" style="color:black"></i>
                             </button>`;
 
                 genChordsItem.appendChild(showTabDiv);
@@ -510,7 +510,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 // playChordsBtnDiv.classList.add('row');
                 playChordsBtnDiv.innerHTML = `
                             <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
-                                <i class="fa fa-play alternates alternates_${i}"></i>
+                                <i class="fa fa-play fa-lg alternates alternates_${i}"></i>
                             </button>`;
                 playChordsBtnDiv.onclick = (function(i){
                     return function() { 
