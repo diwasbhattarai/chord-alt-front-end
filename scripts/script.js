@@ -305,8 +305,10 @@ $(document).on('click', '#submit_button',(function(e) {
     $('.loading-spinner').show();
     $('#submit_button').prop('disabled', true);
 
+    // url: 'http://localhost:5000/api/reharmonize',
+
 	$.ajax({
-		url: 'http://localhost:5000/api/reharmonize',
+        url: 'https://chord-alt-api.azurewebsites.net/api/reharmonize',
 		type: 'GET',
 		dataType: 'json',
 		data: {'progression': progression},
