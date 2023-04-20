@@ -9,15 +9,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <!-- Music Theory lib -->
     <script src="https://cdn.jsdelivr.net/npm/tonal/browser/tonal.min.js"></script>
-    <!-- <script src="https://raw.githubusercontent.com/tonaljs/tonal/master/packages/tonal/browser/tonal.min.js"></script> -->
-    <!-- <script src="./lib/tonal.js"></script> -->
-    <!-- <script src="node_modules/tonal/browser/tonal.min.js"></script> -->
-    <!-- <script type="module">
-        import tonaljstonal from 'https://cdn.jsdelivr.net/npm/@tonaljs/tonal@4.10.0/+esm'
-        window.Tonal = tonaljstonal;
-    </script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal@4.10.0/browser/tonal.min.js"></script> -->
-
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
@@ -98,9 +90,7 @@
                             <option value="add9">add9</option>
                         </select>
                     </div>
-                    <!-- <div class="col-2"></div> -->
                     <div class="col-4" style="align-self: center;">
-                        <!-- <button id="add-chord" class="btn btn-primary btn-sm btn-center btn-circle"><i class="fa fa-plus"></i></button> -->
                         <div class="row">
                             <div class="col-md-6 d-flex align-items-center justify-content-center" >
                                 <button id="add-chord" class="btn btn-primary rounded-circle" ><i class="fa fa-plus fa-lg"></i></button>
@@ -111,13 +101,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- <hr/> -->
                 <div class="row">
                     <hr/>
                     
-                    <!-- <div class="row">&nbsp;</div> -->
                     <div id="chords-container" class="row">
-                        <!-- <hr/> -->
+                        
                         <div class="col align-self-center" style="float:left;">
                             <button type="button" class="btn btn-primary btn-rounded btn-icon rounded-circle" id="play_original_button">
                                 <i id="play_original_button_icon" class="fa fa-play fa-lg"></i>
@@ -127,27 +115,22 @@
                     </div>
                     
                     <div class="row">
-                        <!-- <hr/> -->
+                        
                         &nbsp;&nbsp;
                         <div class="col-auto">
-                            <!-- <div class="row"> -->
                                 <p class="text-left text-muted font-weight-lighter" style="text-align: left;font-size:20px">
                                     Max chords: 5<br/>Click red button to remove chord.<br/>Might take a minute for generation to complete.
                                 </p>
-                            <!-- </div> -->
                         </div>
                         <div class="col" style="align-self: center;">
                             <button type="button" class="btn btn-primary" id="submit_button" 
                                     style="float: right; margin-top: 10px; margin-bottom: 10px; margin-right: -10px;">
-                                    <i id="play_original_button_icon" class="fa fa-robot fa-lg"></i>&nbsp;&nbsp;Generate
+                                    <i class="fa fa-robot fa-lg"></i>&nbsp;&nbsp;Generate
                             </button>
                         </div>
                     </div>
-
-                    
-                    
                 </div>
-                <!-- style="display: none;" -->
+                
                 <div class="col-md-1 spinner-grow text-success loading-spinner" role="status" style="display: none;">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -175,7 +158,7 @@
             <div class="text-muted">
             <div class="row">
                 <div class="col-md-12 text-left">
-                <p class="">2023 | Powered by GPT-4 | Research purposes only | <a href="https://vivid-emmental-931.notion.site/BUGS-e3e8445c5e884daaae9811ab58573af8">Known Bugs</a></a></p>
+                <p class="">2023 | Powered by GPT-4 | Research purposes only | <a href="https://vivid-emmental-931.notion.site/BUGS-e3e8445c5e884daaae9811ab58573af8">Known Bugs</a></p>
                 </div>
 
             </div>

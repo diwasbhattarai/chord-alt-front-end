@@ -1,77 +1,3 @@
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const INTERVALS = {
-    maj: [0, 4, 7],
-    min: [0, 3, 7],
-    dim: [0, 3, 6],
-    aug: [0, 4, 8],
-    '7': [0, 4, 7, 10],
-    maj7: [0, 4, 7, 11],
-    min7: [0, 3, 7, 10],
-    minmaj7: [0, 3, 7, 11],
-    dim7: [0, 3, 6, 9],
-    hdim7: [0, 3, 6, 10],
-    aug7: [0, 4, 8, 10],
-    sus2: [0, 2, 7],
-    sus4: [0, 5, 7],
-    '9': [0, 4, 7, 10, 14],
-    maj9: [0, 4, 7, 11, 14],
-    min9: [0, 3, 7, 10, 14],
-    '11': [0, 4, 7, 10, 14, 17],
-    maj11: [0, 4, 7, 11, 14, 17],
-    min11: [0, 3, 7, 10, 14, 16],
-    '13': [0, 4, 7, 10, 14, 17, 21],
-    maj13: [0, 4, 7, 11, 14, 17, 21],
-    min13: [0, 3, 7, 10, 14, 17, 21],
-    add9: [0, 4, 7, 14],
-  };
-function getNoteIndex(note) {
-  const index = NOTES.indexOf(note);
-  if (index === -1) throw new Error('Invalid note name');
-  return index;
-}
-
-function transposeNote(note, interval) {
-    const index = (getNoteIndex(note) + interval + NOTES.length) % NOTES.length;
-    return NOTES[index];
-  }
-
-function spellChord(chord) {
-    const regex = /^([A-Ga-g])([#b]?)([^#b]*)$/;
-    const match = chord.match(regex);
-  
-    if (!match) throw new Error('Invalid chord name');
-  
-    const [, note, accidental, suffix] = match;
-
-    let root = note.toUpperCase();
-    if (accidental === 'b') {
-      root = transposeNote(root, -1);
-    } else if (accidental === '#') {
-      root = transposeNote(root, 1);
-    }
-  
-    let intervals;
-    if (INTERVALS.hasOwnProperty(suffix)) {
-      intervals = INTERVALS[suffix];
-    } else {
-      const baseIntervals = suffix.startsWith('m') ? INTERVALS.min : INTERVALS.maj;
-      const additionalSuffix = suffix.startsWith('m') ? suffix.slice(1) : suffix;
-      const additionalIntervals = INTERVALS[additionalSuffix];
-         if (additionalIntervals) {
-             intervals = [
-               ...baseIntervals.slice(0, 3),
-               ...additionalIntervals.slice(3),
-             ];
-      } else {
-        intervals = baseIntervals;
-      }
-    }
-  
-    const notes = intervals.map(interval => transposeNote(root, interval));
-    return notes;
-  
-}
-
 let pianoPart;
 let responseData;
 let playing = false;
@@ -96,12 +22,6 @@ function playChordProgression(chordProgression, alternate, altIndex, alternate0,
     });
 
     if (playing) {
-        
-        // if (alternate) 
-        // {
-        //     changePlayIcon('.alternates_'+altIndex);   
-        // }
-        // changePlayIcon('#play_original_button_icon');
         stopPlaying();
         return;
     }
@@ -114,7 +34,6 @@ function playChordProgression(chordProgression, alternate, altIndex, alternate0,
             $(this).addClass('chord_'+index);
         });
     } else {
-        // console.log('.alt_chord'+altIndex0+'_'+altIndex);
         if (!alternate) {
             $('.alt_chords'+altIndex0).each(function(index) {
                 $(this).addClass('chord_'+index);
@@ -135,7 +54,6 @@ function playChordProgression(chordProgression, alternate, altIndex, alternate0,
     for (let i = 0; i < chordProgression.length; i++) {
         let chord = chordProgression[i];
         let notes = Tonal.Chord.get(chord)['notes'].map((note, idx) => idx===0 ? note+'3' : note+'4');
-        // console.log(chord, notes);
         notesCollection.push(notes);
     }
 
@@ -267,7 +185,6 @@ function transformChordType(arrayOfStrings) {
 
 function inverseTransformChordType(str) {
     // changes '[Cmaj, Dm]' to ['Cmaj', 'Dm']
-    // console.log(str);
     let newstr = str.substring(1, str.length-1).split(",").map(s => s.trim());
     return newstr;
 }
@@ -278,22 +195,18 @@ $(document).on('click', '#play_original_button',(function(e) {
     let progression = transformChordType(chords);
     
 
-    // take the progression and split each chord it into an array
     let progression_chord_array = progression.substring(1, progression.length-1).split(",").map(s => s.trim());
-    // console.log(progression_chord_array);
+    
 
-    // playing = true;
     playChordProgression(progression_chord_array);
 
-    // changePlayIcon('#play_original_button_icon');
 }));
 
 
 let showingTab = {index: -1, passing: false};
 $(document).on('click', '#submit_button',(function(e) {
 	e.preventDefault();
-    // $('#output').empty();
-	// let progression = $('#progression_input').val();
+    
     let progression = transformChordType(chords);
     let style = $('#style_input').val();
     let passingChords = $('#passing_input').val();
@@ -313,7 +226,6 @@ $(document).on('click', '#submit_button',(function(e) {
 		contentType: 'application/json; charset=utf-8',
 		success: function(response) {
             responseData = response;
-			console.log(response);
             
             
             let genChordContainer = document.getElementById('gen-container');
@@ -353,7 +265,6 @@ $(document).on('click', '#submit_button',(function(e) {
                 `;
                 genChordsDiv.innerHTML += explanationHTML;
 
-                // add a circular play button for each alternate
                 let genChordsItem = (document.createElement('div'))
                 genChordsItem.classList.add('col-md-2');
                 genChordsItem.classList.add('align-self-center');
@@ -376,18 +287,7 @@ $(document).on('click', '#submit_button',(function(e) {
                                 $(tabs[i]).text('');
                             }
 
-                            // for (i = 0; i < progression.length; i++) {
-                            //     // if (showingTab.passing) {
-                            //         let element = document.getElementsByClassName('tab-chords-passing' + index + '_' + (i))[0];
-                            //         element.innerHTML = '';
-                            //     // } else {
-                            //         element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
-                            //         element.innerHTML = '';
-                            //     // }
-                            // }
-                            
                             showingTab.index = -1;
-                            // showingTab.passing = false;
                         } else {
                             for (i = 0; i < progression.length; i++) {
                                 let chord = progression[i];
@@ -414,10 +314,8 @@ $(document).on('click', '#submit_button',(function(e) {
                                                         stringCount: 6,
                                                         }, 
                                                         { target: element });
-                                // debugger;
                             }
                             showingTab.index = index;
-                            // showingTab.passing = passing;
                         }
 
                     };
@@ -427,7 +325,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 genChordsItem.appendChild(showTabDiv);
 
                 let playChordsBtnDiv = document.createElement('div');
-                // playChordsBtnDiv.classList.add('row');
+                
                 playChordsBtnDiv.innerHTML = `
                             <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
                                 <i class="fa fa-play fa-lg alternates0 alternates0_${i}"></i>
@@ -436,7 +334,6 @@ $(document).on('click', '#submit_button',(function(e) {
 
                 playChordsBtnDiv.onclick = (function(i){
                     return function() { 
-                        // debugger;
                         playChordProgression(chords, false, -1, true, i);
                     };
                 })(i)
@@ -446,16 +343,10 @@ $(document).on('click', '#submit_button',(function(e) {
                 genChordGrp.classList.add('col-md-10', 'align-self-center');
 
 
-                
-                // genChordsItem = (document.createElement('div'));
-                // genChordsItem.classList.add('col-md-10');
-                // loop through each chord in the progression
                 for (let j = 0; j < chords.length; j++) {
-                    // genChordsItem = genChordsItem.appendChild(document.createElement('div'))
                     let tabDiv = document.createElement('div');
                     tabDiv.classList.add('tab-chords'+i+'_'+j);
                     
-                    // genChordsDiv.appendChild(genChordsItem);
 
                     genChordsItem = genChordsItem.appendChild(document.createElement('div'))
                     
@@ -468,7 +359,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 }
                 genChordsDiv.appendChild(genChordGrp);
                 let hr = document.createElement('hr');
-                // hr.style.marginTop = '20px';
+                
                 genChordsDivOg.appendChild(hr);
 
                 explanationHTML = `
@@ -488,13 +379,12 @@ $(document).on('click', '#submit_button',(function(e) {
 
                 genChordsDiv = genChordsDiv.appendChild(document.createElement('div'))
 
-                // genChordsDiv.classList.add('row', 'gen_chords_passing', 'gen_chords_progression', 'flex-nowrap');
                 genChordsDiv.classList.add('row', 'gen_chords_passing', 'gen_chords_progression');
 
                 genChordsItem = (document.createElement('div'))
                 genChordsItem.classList.add('col-md-2');
                 genChordsItem.classList.add('align-self-center');
-                // genChordsDiv.innerHTML += explanationHTML;
+                
                 showTabDiv = document.createElement('div');
                 showTabDiv.classList.add('row');
                 showTabDiv.innerHTML = `
@@ -505,7 +395,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 genChordsItem.appendChild(showTabDiv);
 
                 playChordsBtnDiv = document.createElement('div');
-                // playChordsBtnDiv.classList.add('row');
+                
                 playChordsBtnDiv.innerHTML = `
                             <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
                                 <i class="fa fa-play fa-lg alternates alternates_${i}"></i>
@@ -527,18 +417,8 @@ $(document).on('click', '#submit_button',(function(e) {
                             for (let i = 0; i < tabs.length; i++) {
                                 $(tabs[i]).text('');
                             }
-                            // for (i = 0; i < progression.length; i++) {
-                            //     // if (showingTab.passing) {
-                            //     let element = document.getElementsByClassName('tab-chords-passing' + index + '_' + (i))[0];
-                            //     element.innerHTML = '';
-                            //     // } else {
-                            //     element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
-                            //     element.innerHTML = '';
-                            //     // }
-                            // }
-                            
+                                                        
                             showingTab.index = -1;
-                            // showingTab.passing = false;
                             return;
                         }
 
@@ -550,7 +430,7 @@ $(document).on('click', '#submit_button',(function(e) {
 
                             let element = document.getElementsByClassName('tab-chords-passing' + index + '_' + (i))[0];
                             element.innerHTML = '';
-                            // element.classList.add('col-md-3')
+                            
                             if (!fingering) continue;
 
                             let shape = fingering[0]['positions'].join('');
@@ -571,22 +451,13 @@ $(document).on('click', '#submit_button',(function(e) {
                                                         { target: element });
                         }
                         showingTab.index = index;
-                        // showingTab.passing = passing;
 
                     };
                 })(i, inv_passingChords, true, fingerings);
                 genChordsItem.appendChild(playChordsBtnDiv);
 
-                // genChordsItem.innerHTML = `
-                //             <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
-                //                 <i class="fa fa-play alternates alternates_${i}"></i>
-                //             </button>
-                // `;
-                console.log([chords.map((chord) => `'${chord}'`).join(', ')]);
+                // console.log([chords.map((chord) => `'${chord}'`).join(', ')]);
                 
-                // genChordsItem.onclick = function() { 
-                //     playChordProgressionPassing(i)
-                // }
                 genChordsDiv.appendChild(genChordsItem);
                 
                 genChordGrp = (document.createElement('div'))

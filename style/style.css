@@ -33,6 +33,7 @@ hr {
 
 .container {
 	/* max-width: 800px; */
+	max-width: 90%;
 	/* margin: 0px; */
 	/* padding: 50px; */
 	text-align: center;
@@ -79,11 +80,11 @@ p {
 	align-items: center !important;
 }
 
-#gen-container {
-	/* padding: 0px; */
-	/* padding-right: 0px !important; */
-	/* margin-bottom: 0px; */
-}
+/* #gen-container {
+	padding: 0px; 
+	padding-right: 0px !important; 
+	margin-bottom: 0px; 
+} */
 
 .gen_chords_container {
 	border: 1px solid #e6e6e6;
