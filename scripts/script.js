@@ -295,18 +295,11 @@ $(document).on('click', '#submit_button',(function(e) {
 
                                 let element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
                                 element.innerHTML = '';
-                                // element.classList.add('col-md-3')
+                                
                                 if (!fingering) continue;
 
                                 let shape = fingering[0]['positions'].join('');
-                                let root = 1;
-                                for (let j = 0; j < shape.length; j++) {
-                                    if (shape[j] === 'x') continue;
-                                    else { 
-                                        root = j + 1;
-                                        break;
-                                    }
-                                }
+                                let root = shape.findIndex(char => char !== 'x') + 1;
                                 
                                 let svg = new ChordySvg({ name: '', 
                                                         shape: fingering[0]['positions'].join(''), 
