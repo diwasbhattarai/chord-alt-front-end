@@ -81,6 +81,16 @@ p {
 	align-items: center !important;
 }
 
+.tab-next {
+	background-color: #ffffff00 !important;
+	color: #000000 !important;
+}
+
+.tab-net:disabled, .tab-net[disabled] {
+	background: #fafafa !important;
+	color: #bbbbbb !important;
+}
+
 /* #gen-container {
 	padding: 0px; 
 	padding-right: 0px !important; 

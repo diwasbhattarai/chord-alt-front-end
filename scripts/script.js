@@ -217,9 +217,10 @@ $(document).on('click', '#submit_button',(function(e) {
     $('#submit_button').prop('disabled', true);
 
     // url: 'http://localhost:5000/api/reharmonize',
+    // 'https://chord-alt-api.azurewebsites.net/api/reharmonize'
 
 	$.ajax({
-        url: 'https://chord-alt-api.azurewebsites.net/api/reharmonize',
+        url: 'http://localhost:5000/api/reharmonize',
 		type: 'GET',
 		dataType: 'json',
 		data: {'progression': progression},
@@ -277,8 +278,11 @@ $(document).on('click', '#submit_button',(function(e) {
                             </button>`;
 
                 showTabDiv.onclick = (function(index, progression, passing, fingerings_dict) {
-                    return function () {
-                        console.log(index, progression, passing, fingerings_dict, showingTab);
+                    
+
+
+                    function draw_tabs() {
+                        // console.log(index, progression, passing, fingerings_dict, showingTab);
 
                         if (showingTab.index !== -1) {
                             let tabs = document.querySelectorAll("[class^='tab-chords']");
@@ -289,36 +293,93 @@ $(document).on('click', '#submit_button',(function(e) {
 
                             showingTab.index = -1;
                         } else {
-                            for (i = 0; i < progression.length; i++) {
-                                let chord = progression[i];
-                                let fingering = fingerings_dict[chord];
-
-                                let element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
-                                element.innerHTML = '';
-                                // element.classList.add('col-md-3')
-                                if (!fingering) continue;
-
-                                let shape = fingering[0]['positions'].join('');
-                                let root = 1;
-                                for (let j = 0; j < shape.length; j++) {
-                                    if (shape[j] === 'x') continue;
-                                    else { 
-                                        root = j + 1;
-                                        break;
-                                    }
-                                }
-                                
-                                let svg = new ChordySvg({ name: '', 
-                                                        shape: fingering[0]['positions'].join(''), 
-                                                        root: root,
-                                                        stringCount: 6,
-                                                        }, 
-                                                        { target: element });
-                            }
+                            generate_tabs();
                             showingTab.index = index;
                         }
-
                     };
+
+                    function generate_tabs(){
+                        for (i = 0; i < progression.length; i++) {
+                            let chord = progression[i];
+                            let fingering = fingerings_dict[chord];
+
+                            let element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
+                            element.innerHTML = '';
+                            // element.classList.add('col-md-3')
+                            if (!fingering) continue;
+
+                            let shape = fingering[fingerings_index[chord]]['positions'].join('');
+                            let root = 1;
+                            for (let j = 0; j < shape.length; j++) {
+                                if (shape[j] === 'x') continue;
+                                else { 
+                                    root = j + 1;
+                                    break;
+                                }
+                            }
+                            
+                            let svg = new ChordySvg({ name: '', 
+                                                    shape: shape, 
+                                                    root: root,
+                                                    stringCount: 6,
+                                                    }, 
+                                                    { target: element });
+
+                            
+                            element.appendChild(create_tab_scroller(chord));
+                        }
+                    }
+
+                    function create_tab_scroller(chord){
+                        const div = document.createElement("div");
+                        div.className = "row";
+                        const button1 = document.createElement("button");
+                        const button2 = document.createElement("button");
+
+                        button1.type = "button";
+                        button1.className = "col btn btn-outline-primary tab-next";
+                        button1.onclick = function() { changeFingering(-1, chord); };
+                        const i1 = document.createElement("i");
+                        i1.className = "fa fa-play fa-sm fa-flip-horizontal";
+                        button1.appendChild(i1);
+
+                        const span = document.createElement("span");
+                        span.className = "col";
+                        span.style.fontSize = "20px";
+                        span.innerHTML = fingerings_index[chord] + 1;
+
+                        button2.type = "button";
+                        button2.className = "col btn btn-outline-primary tab-next";
+                        button2.onclick = function() { changeFingering(+1, chord); };
+                        const i2 = document.createElement("i");
+                        i2.className = "fa fa-play fa-sm";
+                        button2.appendChild(i2);
+
+                        
+                        div.appendChild(button1);
+                        div.appendChild(span);
+                        div.appendChild(button2);
+                        // div.innerHTML += div.outerHTML;
+
+                        return div;
+                    }
+
+                    function changeFingering(direction, chord) {
+
+                        fingerings_index[chord] += direction;
+                        if (fingerings_index[chord] < 0) fingerings_index[chord] = 0;
+                        if (fingerings_index[chord] >= fingerings_dict[progression[0]].length) fingerings_index[chord] = fingerings_dict[chord].length - 1;
+                        generate_tabs();
+                    }
+
+                    // create a dict with the chord as the key and the fingering as the value
+                    let fingerings_index = {};
+                    for (let i = 0; i < progression.length; i++) {
+                        fingerings_index[progression[i]] = 0;
+                        console.log('here')
+                    }
+
+                    return draw_tabs;
                 })(i, chords, false, fingerings);
 
 
