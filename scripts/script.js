@@ -220,7 +220,8 @@ $(document).on('click', '#submit_button',(function(e) {
     // 'https://chord-alt-api.azurewebsites.net/api/reharmonize'
 
 	$.ajax({
-        url: 'http://localhost:5000/api/reharmonize',
+        // url: 'http://localhost:5000/api/reharmonize',
+        url: 'https://chord-alt-api.azurewebsites.net/api/reharmonize',
 		type: 'GET',
 		dataType: 'json',
 		data: {'progression': progression},
@@ -305,7 +306,7 @@ $(document).on('click', '#submit_button',(function(e) {
 
                             let element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
                             element.innerHTML = '';
-                            // element.classList.add('col-md-3')
+                            
                             if (!fingering) continue;
 
                             let shape = fingering[fingerings_index[chord]]['positions'].join('');
@@ -359,7 +360,6 @@ $(document).on('click', '#submit_button',(function(e) {
                         div.appendChild(button1);
                         div.appendChild(span);
                         div.appendChild(button2);
-                        // div.innerHTML += div.outerHTML;
 
                         return div;
                     }
@@ -376,7 +376,6 @@ $(document).on('click', '#submit_button',(function(e) {
                     let fingerings_index = {};
                     for (let i = 0; i < progression.length; i++) {
                         fingerings_index[progression[i]] = 0;
-                        console.log('here')
                     }
 
                     return draw_tabs;
