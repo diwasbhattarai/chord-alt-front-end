@@ -70,6 +70,10 @@ select {
 	color: black;
 }
 
+label {
+	font-size: 20px;
+}
+
 
 
 p {
