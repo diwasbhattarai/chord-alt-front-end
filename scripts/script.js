@@ -246,7 +246,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 let inv_chords = (chords);
                 let inv_passingChords = (getNewProgressionWPassingChords(i));
 
-                genChordsDiv = genChordContainer.appendChild(document.createElement('div'))
+                let genChordsDiv = genChordContainer.appendChild(document.createElement('div'))
                 genChordsDiv.classList.add('gen_chords_container');
                 genChordsDiv = genChordsDiv.appendChild(document.createElement('div'))
                 let genChordsDivOg = genChordsDiv;
@@ -271,7 +271,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 let showTabDiv;
                 let playChordsBtnDiv;
                 let genChordGrp;
-                let genChordsDiv = createGenProgression(i, chords, fingerings, inv_chords);
+                genChordsDiv = createGenProgression(i, chords, fingerings, inv_chords, genChordsDiv);
                 let hr = document.createElement('hr');
                 genChordsDivOg.appendChild(genChordsDiv);
                 genChordsDivOg.appendChild(hr);
@@ -393,7 +393,7 @@ $(document).on('click', '#submit_button',(function(e) {
             $('#submit_button').prop('disabled', false);
 
 
-            function createGenProgression(i, chords, fingerings, inv_chords) {
+            function createGenProgression(i, chords, fingerings, inv_chords, genChordsDiv) {
 
                 let genChordsItem = (document.createElement('div'));
                 genChordsItem.classList.add('col-md-2');
