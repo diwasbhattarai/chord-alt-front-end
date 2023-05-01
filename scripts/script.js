@@ -303,7 +303,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 showTabDiv.classList.add('row');
                 showTabDiv.innerHTML = `
                             <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
-                                <i class="fa fa-guitar fa-lg" style="color:black"></i>
+                                <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i>
                             </button>`;
 
                 genChordsItem.appendChild(showTabDiv);
@@ -403,7 +403,7 @@ $(document).on('click', '#submit_button',(function(e) {
                 showTabDiv.classList.add('row');
                 showTabDiv.innerHTML = `
                             <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
-                                <i class="fa fa-guitar fa-lg" style="color:black"></i>
+                                <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i>
                             </button>`;
 
                 showTabDiv.onclick = (function (index, progression, passing, fingerings_dict) {
@@ -562,4 +562,55 @@ $(document).on('click', '#submit_button',(function(e) {
 	});
 }));
 
+$(document).ready(function() {
+    intro = introJs();
+       
+    intro.onexit(function() {
+        localStorage.setItem('intro_shown', true);
+    });
+
+    intro.oncomplete(function() {
+        localStorage.setItem('intro_shown', true);
+    });
+
+    if (localStorage.getItem('intro_shown') !== 'true') {
+        showIntro();
+    }
+
+});
+
+
+function showIntro(){
+    intro.addSteps([{
+        element: $('#root-note')[0],
+        intro: `<span class="small-text-intro">Select the root note of the chord.</span>`,
+    },
+    {
+        element: $('#quality')[0],
+        intro: `<span class="small-text-intro">Select the quality of the chord.</span>`,
+    },
+    {
+        element: $('#add-chord')[0],
+        intro: `<span class="small-text-intro">Add the chord to the progression.</span>`,
+    },
+    {
+        element: $('#chords-container')[0],
+        intro: `<span class="small-text-intro">The chord progression will be displayed here. Click on any chord to remove from progression.</span>`,
+    },
+    {
+        element: $('#play_original_button')[0],
+        intro: `<span class="small-text-intro">Play to listen to the progression.</span>`,
+    },
+    {
+        element: $('#submit_button')[0],
+        intro: `<span class="small-text-intro">Generate variations for the progression.</span>`,
+    },
+    {
+        element: $('.fa-guitar')[0],
+        intro: `<span class="small-text-intro">After generation is complete, click <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i> to show guitar tabs.</span>`,
+    }
+    ]);
+
+    intro.start();
+}
 
