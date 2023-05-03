@@ -1,4 +1,4 @@
-let prod = false;
+let prod = true;
 
 let base_url = '';
 if (prod) {
