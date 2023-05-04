@@ -249,7 +249,11 @@ function checkTaskStatus(response) {
 
     if (totalCount !== undefined && totalCount > 0) {
         $('#queue-position').show();
-        $('#queue-position').text('You are in position ' + position + ' out of ' + totalCount + ' in the queue.');
+        if (position === 1){
+            $('#queue-position').text('Your request is currently being processed. Please wait...');    
+        } else {
+            $('#queue-position').text('Your queue position: ' + position);
+        }
     } else {
         $('#queue-position').hide();
     }
