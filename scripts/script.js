@@ -1,4 +1,4 @@
-let prod = true;
+let prod = false;
 
 let base_url = '';
 if (prod) {
@@ -121,7 +121,7 @@ function changeChordColor(index, alternate, altIndex, passing, passingIndex) {
         $('.chord_item').css('background-color', 'white');
         $('.chord_'+index).css('background-color', '#3e8e415f');
     } else {
-        console.log('.alt_chord_item .alt_chords'+(altIndex)+'_'+index+' chord_'+index);
+        // console.log('.alt_chord_item .alt_chords'+(altIndex)+'_'+index+' chord_'+index);
         if (passing){
             $('.alt_chord_item').css('background-color', 'white');
             $('.alt_chord_item.alt_chords_passing'+(altIndex)+'_'+index+'.chord_'+index).css('background-color', '#3e8e415f');
@@ -261,7 +261,6 @@ function checkTaskStatus(response) {
         
         contentType: 'application/json; charset=utf-8',
         success: function(response) {
-            console.log(response);
             if (response['status'] === 'SUCCESS') {
                 $.ajax({
                     url: base_url + 'task_result/' + taskid,
@@ -337,9 +336,9 @@ function processResponse(response) {
         let playChordsBtnDiv;
         let genChordGrp;
         genChordsDiv = createGenProgression(i, chords, fingerings, inv_chords, genChordsDiv);
-        let hr = document.createElement('hr');
+        
         genChordsDivOg.appendChild(genChordsDiv);
-        genChordsDivOg.appendChild(hr);
+        genChordsDivOg.appendChild(document.createElement('hr'));
 
         explanationHTML = `
         <div class="">
@@ -353,105 +352,113 @@ function processResponse(response) {
 
 
 
-        genChordsDiv = genChordsDivOg.appendChild(document.createElement('div'))
+        
+        genChordsDiv = document.createElement('div');
+        genChordsDiv.classList.add('row', 'gen_chords_progression');
         genChordsDiv.innerHTML += explanationHTML;
 
-        genChordsDiv = genChordsDiv.appendChild(document.createElement('div'))
-
-        genChordsDiv.classList.add('row', 'gen_chords_passing', 'gen_chords_progression');
-
-        genChordsItem = (document.createElement('div'))
-        genChordsItem.classList.add('col-md-2');
-        genChordsItem.classList.add('align-self-center');
+        genChordsDiv = createGenProgression(i, inv_passingChords, fingerings, inv_passingChords, genChordsDiv, true);
+        genChordsDivOg.appendChild(genChordsDiv);
         
-        showTabDiv = document.createElement('div');
-        showTabDiv.classList.add('row');
-        showTabDiv.innerHTML = `
-                    <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
-                        <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i>
-                    </button>`;
-
-        genChordsItem.appendChild(showTabDiv);
-
-        playChordsBtnDiv = document.createElement('div');
         
-        playChordsBtnDiv.innerHTML = `
-                    <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
-                        <i class="fa fa-play fa-lg alternates alternates_${i}"></i>
-                    </button>`;
-        playChordsBtnDiv.onclick = (function(i){
-            return function() { 
-                playChordProgression(inv_passingChords, true, -1, true, i);
-            };
-        })(i)
+        
 
-        showTabDiv.onclick = (function(index, progression, passing, fingerings_dict) {
-            return function () {
+        // genChordsDiv = genChordsDiv.appendChild(document.createElement('div'))
 
-                if (showingTab.index !== -1) {
-                    let tabs = document.querySelectorAll("[class^='tab-chords']");
+        // genChordsDiv.classList.add('row', 'gen_chords_passing', 'gen_chords_progression');
+
+        // genChordsItem = (document.createElement('div'))
+        // genChordsItem.classList.add('col-md-2');
+        // genChordsItem.classList.add('align-self-center');
+        
+        // showTabDiv = document.createElement('div');
+        // showTabDiv.classList.add('row');
+        // showTabDiv.innerHTML = `
+        //             <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
+        //                 <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i>
+        //             </button>`;
+
+        // genChordsItem.appendChild(showTabDiv);
+
+        // playChordsBtnDiv = document.createElement('div');
+        
+        // playChordsBtnDiv.innerHTML = `
+        //             <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
+        //                 <i class="fa fa-play fa-lg alternates alternates_${i}"></i>
+        //             </button>`;
+        // playChordsBtnDiv.onclick = (function(i){
+        //     return function() { 
+        //         playChordProgression(inv_passingChords, true, -1, true, i);
+        //     };
+        // })(i)
+
+        // showTabDiv.onclick = (function(index, progression, passing, fingerings_dict) {
+        //     return function () {
+
+        //         if (showingTab.index !== -1) {
+        //             let tabs = document.querySelectorAll("[class^='tab-chords']");
                     
-                    for (let i = 0; i < tabs.length; i++) {
-                        $(tabs[i]).text('');
-                    }
+        //             for (let i = 0; i < tabs.length; i++) {
+        //                 $(tabs[i]).text('');
+        //             }
                                                 
-                    showingTab.index = -1;
-                    return;
-                }
+        //             showingTab.index = -1;
+        //             return;
+        //         }
 
 
 
-                for (i = 0; i < progression.length; i++) {
-                    let chord = progression[i];
-                    let fingering = fingerings_dict[chord];
+        //         for (i = 0; i < progression.length; i++) {
+        //             let chord = progression[i];
+        //             let fingering = fingerings_dict[chord];
 
-                    let element = document.getElementsByClassName('tab-chords-passing' + index + '_' + (i))[0];
-                    element.innerHTML = '';
+        //             let element = document.getElementsByClassName('tab-chords-passing' + index + '_' + (i))[0];
+        //             element.innerHTML = '';
                     
-                    if (!fingering) continue;
+        //             if (!fingering) continue;
 
-                    let shape = fingering[0]['positions'].join('');
-                    let root = 1;
-                    for (let j = 0; j < shape.length; j++) {
-                        if (shape[j] === 'x') continue;
-                        else { 
-                            root = j + 1;
-                            break;
-                        }
-                    }
+        //             let shape = fingering[0]['positions'].join('');
+        //             let root = 1;
+        //             for (let j = 0; j < shape.length; j++) {
+        //                 if (shape[j] === 'x') continue;
+        //                 else { 
+        //                     root = j + 1;
+        //                     break;
+        //                 }
+        //             }
                     
-                    let svg = new ChordySvg({ name: '', 
-                                                shape: fingering[0]['positions'].join(''), 
-                                                root: root,
-                                                stringCount: 6,
-                                            }, 
-                                                { target: element });
-                }
-                showingTab.index = index;
+        //             let svg = new ChordySvg({ name: '', 
+        //                                         shape: fingering[0]['positions'].join(''), 
+        //                                         root: root,
+        //                                         stringCount: 6,
+        //                                     }, 
+        //                                         { target: element });
+        //         }
+        //         showingTab.index = index;
 
-            };
-        })(i, inv_passingChords, true, fingerings);
-        genChordsItem.appendChild(playChordsBtnDiv);
+        //     };
+        // })(i, inv_passingChords, true, fingerings);
+        // genChordsItem.appendChild(playChordsBtnDiv);
 
-        // console.log([chords.map((chord) => `'${chord}'`).join(', ')]);
+        // // console.log([chords.map((chord) => `'${chord}'`).join(', ')]);
         
-        genChordsDiv.appendChild(genChordsItem);
+        // genChordsDiv.appendChild(genChordsItem);
         
-        genChordGrp = (document.createElement('div'))
-        genChordGrp.classList.add('col-md-10', 'align-self-center');
+        // genChordGrp = (document.createElement('div'))
+        // genChordGrp.classList.add('col-md-10', 'align-self-center');
 
-        for (let j = 0; j < inv_passingChords.length; j++) {
-            genChordsItem = (document.createElement('div'))
-            genChordsItem.classList.add('col-auto', 'alt_chord_item', 'alt_chords_passing'+i, 'alt_chords_passing'+i+'_'+j);
-            genChordsItem.textContent = inv_passingChords[j];
+        // for (let j = 0; j < inv_passingChords.length; j++) {
+        //     genChordsItem = (document.createElement('div'))
+        //     genChordsItem.classList.add('col-auto', 'alt_chord_item', 'alt_chords_passing'+i, 'alt_chords_passing'+i+'_'+j);
+        //     genChordsItem.textContent = inv_passingChords[j];
 
-            let tabDiv = document.createElement('div');
-            tabDiv.classList.add('tab-chords-passing'+i+'_'+j);
-            genChordsItem.appendChild(tabDiv);
+        //     let tabDiv = document.createElement('div');
+        //     tabDiv.classList.add('tab-chords-passing'+i+'_'+j);
+        //     genChordsItem.appendChild(tabDiv);
 
-            genChordGrp.appendChild(genChordsItem);
-        }
-        genChordsDiv.appendChild(genChordGrp);
+        //     genChordGrp.appendChild(genChordsItem);
+        // }
+        // genChordsDiv.appendChild(genChordGrp);
     }
     
     $('.loading-spinner').hide();
@@ -459,165 +466,177 @@ function processResponse(response) {
     $('#submit_button').prop('disabled', false);
 
 
-    function createGenProgression(i, chords, fingerings, inv_chords, genChordsDiv) {
 
-        let genChordsItem = (document.createElement('div'));
-        genChordsItem.classList.add('col-md-2');
-        genChordsItem.classList.add('align-self-center');
+}
 
-        let showTabDiv = document.createElement('div');
-        showTabDiv.classList.add('row');
-        showTabDiv.innerHTML = `
-                    <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
-                        <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i>
-                    </button>`;
+function createGenProgression(i, chords, fingerings, inv_chords, genChordsDiv, passing=false) {
 
-        showTabDiv.onclick = (function (index, progression, passing, fingerings_dict) {
+    let genChordsItem = (document.createElement('div'));
+    genChordsItem.classList.add('col-md-2');
+    genChordsItem.classList.add('align-self-center');
 
+    let showTabDiv = document.createElement('div');
+    showTabDiv.classList.add('row');
+    showTabDiv.innerHTML = `
+                <button type="button" class="col btn btn-primary-outline btn-icon" style="background-color:transparent">
+                    <i class="fa fa-guitar fa-lg" style="color:black; font-size: 40px;"></i>
+                </button>`;
 
+    let tabChords = !passing ? 'tab-chords' : 'tab-chords-passing',
+    alternates    = !passing ? 'alternates0' : 'alternates',
+    alt_chord     = !passing ? 'alt_chords' : 'alt_chords_passing';
 
-            function draw_tabs() {
-                // console.log(index, progression, passing, fingerings_dict, showingTab);
-                if (showingTab.index !== -1) {
-                    let tabs = document.querySelectorAll("[class^='tab-chords']");
+    showTabDiv.onclick = (function (index, progression, passing, fingerings_dict, tabChords) {
 
-                    for (let i = 0; i < tabs.length; i++) {
-                        $(tabs[i]).text('');
-                    }
+        function draw_tabs() {
+            // console.log(index, progression, passing, fingerings_dict, showingTab);
+            if (showingTab.index !== -1) {
+                // debugger;
+                let tabs = document.querySelectorAll("[class^='tab-chords']");
 
-                    showingTab.index = -1;
-                } else {
-                    generate_tabs();
-                    showingTab.index = index;
+                for (let i = 0; i < tabs.length; i++) {
+                    $(tabs[i]).text('');
                 }
-            };
 
-            function generate_tabs() {
-                for (i = 0; i < progression.length; i++) {
-                    let chord = progression[i];
-                    let fingering = fingerings_dict[chord];
-
-                    let element = document.getElementsByClassName('tab-chords' + index + '_' + (i))[0];
-                    element.innerHTML = '';
-
-                    if (!fingering)
-                        continue;
-
-                    let shape = fingering[fingerings_index[chord]]['positions'].join('');
-                    let root = 1;
-                    for (let j = 0; j < shape.length; j++) {
-                        if (shape[j] === 'x')
-                            continue;
-                        else {
-                            root = j + 1;
-                            break;
-                        }
-                    }
-
-                    let svg = new ChordySvg({
-                        name: '',
-                        shape: shape,
-                        root: root,
-                        stringCount: 6,
-                    },
-                        { target: element });
-
-
-                    element.appendChild(create_tab_scroller(chord));
-                }
-            }
-
-            function create_tab_scroller(chord) {
-                const div = document.createElement("div");
-                div.className = "row";
-                const button1 = document.createElement("button");
-                const button2 = document.createElement("button");
-
-                button1.type = "button";
-                button1.className = "col btn btn-outline-primary tab-next";
-                button1.onclick = function () { changeFingering(-1, chord); };
-                const i1 = document.createElement("i");
-                i1.className = "fa fa-play fa-sm fa-flip-horizontal";
-                button1.appendChild(i1);
-
-                const span = document.createElement("span");
-                span.className = "col";
-                span.style.fontSize = "20px";
-                span.innerHTML = fingerings_index[chord] + 1;
-
-                button2.type = "button";
-                button2.className = "col btn btn-outline-primary tab-next";
-                button2.onclick = function () { changeFingering(+1, chord); };
-                const i2 = document.createElement("i");
-                i2.className = "fa fa-play fa-sm";
-                button2.appendChild(i2);
-
-
-                div.appendChild(button1);
-                div.appendChild(span);
-                div.appendChild(button2);
-
-                return div;
-            }
-
-            function changeFingering(direction, chord) {
-
-                fingerings_index[chord] += direction;
-                if (fingerings_index[chord] < 0)
-                    fingerings_index[chord] = 0;
-                if (fingerings_index[chord] >= fingerings_dict[progression[0]].length)
-                    fingerings_index[chord] = fingerings_dict[chord].length - 1;
+                showingTab.index = -1;
+            } else {
                 generate_tabs();
+                showingTab.index = index;
             }
+        };
 
-            // create a dict with the chord as the key and the fingering as the value
-            let fingerings_index = {};
-            for (let i = 0; i < progression.length; i++) {
-                fingerings_index[progression[i]] = 0;
+        function generate_tabs() {
+            for (i = 0; i < progression.length; i++) {
+                let chord = progression[i];
+                let fingering = fingerings_dict[chord];
+
+                let element = document.getElementsByClassName(tabChords + index + '_' + (i))[0];
+                element.innerHTML = '';
+
+                if (!fingering)
+                    continue;
+
+                let shape = fingering[fingerings_index[chord]]['positions'].join('');
+                let root = 1;
+                for (let j = 0; j < shape.length; j++) {
+                    if (shape[j] === 'x')
+                        continue;
+                    else {
+                        root = j + 1;
+                        break;
+                    }
+                }
+
+                let svg = new ChordySvg({
+                    name: '',
+                    shape: shape,
+                    root: root,
+                    stringCount: 6,
+                },
+                    { target: element });
+
+
+                element.appendChild(create_tab_scroller(chord));
             }
-
-            return draw_tabs;
-        })(i, chords, false, fingerings);
-
-
-        genChordsItem.appendChild(showTabDiv);
-
-        let playChordsBtnDiv = document.createElement('div');
-
-        playChordsBtnDiv.innerHTML = `
-                    <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
-                        <i class="fa fa-play fa-lg alternates0 alternates0_${i}"></i>
-                    </button>`;
-        genChordsItem.appendChild(playChordsBtnDiv);
-
-        playChordsBtnDiv.onclick = (function (i) {
-            return function () {
-                playChordProgression(chords, false, -1, true, i);
-            };
-        })(i);
-        genChordsDiv.appendChild(genChordsItem);
-
-        let genChordGrp = document.createElement('div');
-        genChordGrp.classList.add('col-md-10', 'align-self-center');
-
-
-        for (let j = 0; j < chords.length; j++) {
-            let tabDiv = document.createElement('div');
-            tabDiv.classList.add('tab-chords' + i + '_' + j);
-
-
-            genChordsItem = genChordsItem.appendChild(document.createElement('div'));
-
-            genChordsItem.classList.add('col-auto', 'align-self-center', 'alt_chord_item', 'alt_chords' + i, 'alt_chords' + i + '_' + j);
-            genChordsItem.textContent = inv_chords[j];
-
-            genChordsItem.appendChild(tabDiv);
-
-            genChordGrp.appendChild(genChordsItem);
         }
-        genChordsDiv.appendChild(genChordGrp);
-        return genChordsDiv;
+
+        function create_tab_scroller(chord) {
+            const div = document.createElement("div");
+            div.className = "row";
+            const button1 = document.createElement("button");
+            const button2 = document.createElement("button");
+
+            button1.type = "button";
+            button1.className = "col btn btn-outline-primary tab-next";
+            button1.onclick = function () { changeFingering(-1, chord); };
+            const i1 = document.createElement("i");
+            i1.className = "fa fa-play fa-sm fa-flip-horizontal";
+            button1.appendChild(i1);
+
+            const span = document.createElement("span");
+            span.className = "col";
+            span.style.fontSize = "20px";
+            span.innerHTML = fingerings_index[chord] + 1;
+
+            button2.type = "button";
+            button2.className = "col btn btn-outline-primary tab-next";
+            button2.onclick = function () { changeFingering(+1, chord); };
+            const i2 = document.createElement("i");
+            i2.className = "fa fa-play fa-sm";
+            button2.appendChild(i2);
+
+
+            div.appendChild(button1);
+            div.appendChild(span);
+            div.appendChild(button2);
+
+            return div;
+        }
+
+        function changeFingering(direction, chord) {
+
+            fingerings_index[chord] += direction;
+            if (fingerings_index[chord] < 0)
+                fingerings_index[chord] = 0;
+            if (fingerings_index[chord] >= fingerings_dict[progression[0]].length)
+                fingerings_index[chord] = fingerings_dict[chord].length - 1;
+            generate_tabs();
+        }
+
+        // create a dict with the chord as the key and the fingering as the value
+        let fingerings_index = {};
+        for (let i = 0; i < progression.length; i++) {
+            fingerings_index[progression[i]] = 0;
+        }
+
+        return draw_tabs;
+    })(i, chords, passing, fingerings, tabChords);
+
+
+    genChordsItem.appendChild(showTabDiv);
+
+    let playChordsBtnDiv = document.createElement('div');
+
+    playChordsBtnDiv.innerHTML = `
+                <button type="button" class="btn btn-primary btn-sm btn-rounded btn-icon rounded-circle play_button">
+                    <i class="fa fa-play fa-lg ${alternates} ${alternates}_${i}"></i>
+                </button>`;
+    
+
+    playChordsBtnDiv.onclick = (function (i, passing) {
+        return function () {
+            if (!passing){
+                playChordProgression(chords, false, -1, true, i);
+            } else {
+                playChordProgression(inv_chords, true, -1, true, i);
+            }
+            
+        };
+    })(i, passing);
+
+    genChordsItem.appendChild(playChordsBtnDiv);
+    genChordsDiv.appendChild(genChordsItem);
+
+    let genChordGrp = document.createElement('div');
+    genChordGrp.classList.add('col-md-10', 'align-self-center');
+
+
+    for (let j = 0; j < chords.length; j++) {
+        let tabDiv = document.createElement('div');
+        tabDiv.classList.add(tabChords + i + '_' + j);
+
+
+        genChordsItem = genChordsItem.appendChild(document.createElement('div'));
+
+        genChordsItem.classList.add('col-auto', 'align-self-center', 'alt_chord_item', alt_chord + i + '', alt_chord + i + '_' + j);
+        genChordsItem.textContent = inv_chords[j];
+
+        genChordsItem.appendChild(tabDiv);
+
+        genChordGrp.appendChild(genChordsItem);
     }
+    genChordsDiv.appendChild(genChordGrp);
+    return genChordsDiv;
 }
 
 $(document).ready(function() {
