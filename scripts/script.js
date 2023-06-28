@@ -252,7 +252,7 @@ function checkTaskStatus(response) {
            if (position === 1){
             $('#queue-position').text('Your request is currently being processed. Please wait...');    
            } else {
-               $('#queue-position').text('Your queue position: ' + position);
+               $('#queue-position').text('Your position in queue: ' + position);
            }
     } else {
         $('#queue-position').hide();
